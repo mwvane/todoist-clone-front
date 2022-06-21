@@ -17,6 +17,8 @@
         <font-awesome-icon class="fa-icons" icon="filter" style="color: #c89c0a"></font-awesome-icon>
         <span class="mx-2">Filters & Labels</span>
       </div>
+      <slot></slot>
+
     </div>
   </div>
 </template>
