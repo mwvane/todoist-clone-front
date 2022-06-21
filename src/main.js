@@ -16,6 +16,12 @@ import {
     faClipboardCheck,
     faImage,
     faCloudArrowUp,
+    faBars,
+    faHouseChimney,
+    faInbox,
+    faCalendarDays,
+    faCalendarDay,
+    faFilter,
 }
     from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
@@ -32,6 +38,12 @@ library.add(
     faClipboardCheck,
     faImage,
     faCloudArrowUp,
+    faBars,
+    faHouseChimney,
+    faInbox,
+    faCalendarDays,
+    faCalendarDay,
+    faFilter
 )
 
 const app = createApp(App)
