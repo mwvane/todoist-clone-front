@@ -4,6 +4,7 @@
       <div class="col-12">
         <font-awesome-icon  class="mx-2 fa-icons" icon="bars" @click="openSidebar"></font-awesome-icon>
         <font-awesome-icon  class="mx-3 fa-icons" icon="house-chimney"></font-awesome-icon>
+        <slot></slot>
       </div>
     </div>
   </div>
@@ -38,6 +39,8 @@ export default {
   width: 20px;
   height: 20px;
   cursor: pointer;
+  border-radius: 4px;
+
 }
 .fa-icons:hover{
   background-color: #5a5959;
