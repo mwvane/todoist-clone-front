@@ -7,8 +7,8 @@
             <h3> Register </h3>
             <div class="my-4">
               <label for="firstname" class="form-label">Firstname:</label>
-              <CustomInput name="firstname"
-                           attribute="firstname"
+              <CustomInput name="first_name"
+                           attribute="first_name"
                            placeholder="Firstname:"
                            :model="model"
                            :rules="{required: true }">
@@ -16,12 +16,22 @@
             </div>
             <div class="my-4">
               <label for="lastname" class="form-label">Lastname:</label>
-              <CustomInput name="lastname"
-                           attribute="lastname"
+              <CustomInput name="last_name"
+                           attribute="last_name"
                            type="text"
                            :model="model"
                            :rules="{required: true }"
                            placeholder="Lastname:">
+              </CustomInput>
+            </div>
+            <div class="my-4">
+              <label for="email" class="form-label">Username:</label>
+              <CustomInput name="username"
+                           attribute="username"
+                           type="username"
+                           :model="model"
+                           :rules="{required: true }"
+                           placeholder="Enter username">
               </CustomInput>
             </div>
             <div class="my-4">
@@ -55,6 +65,8 @@
               </CustomInput>
             </div>
 
+            <p class="alert alert-danger mt-2 p-2" v-if="errorMessage"> {{ errorMessage }}</p>
+
             <button type="submit"
                     :disabled="isLoading"
                     class="btn btn-primary">
@@ -71,10 +83,13 @@
   </div>
 </template>
 
+<!--suppress ES6MissingAwait -->
 <script>
-import CustomInput from "@/Components/CustomInput";
+import CustomInput from "@/components/CustomInput";
 import {Form} from 'vee-validate'
-import axios from 'axios';
+import AuthService from "@/views/auth/AuthService";
+import helpers from "@/helpers";
+
 export default {
   name: "Register",
   components:{
@@ -84,23 +99,27 @@ export default {
     return {
       isLoading: false,
       model: {
+        first_name: '',
+        last_name: '',
         email: '',
+        username: '',
         password: '',
         confirm_password: '',
-        firstname: 'abc',
-        lastname: '',
-      }
+      },
+      errorMessage: '',
     }
   },
   methods:{
     async submit(){
-      const tmp = this.model.firstname
-      debugger
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 300)
-
+      try {
+        const res = await AuthService.register(this.model)
+        this.$router.push({name: 'login'})
+      } catch (e) {
+        const errors = helpers.getErrors(e.response.data)
+        this.errorMessage = helpers.getFirstError(errors)
+      }
+      this.isLoading = false;
     }
   }
 }

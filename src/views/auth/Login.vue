@@ -2,16 +2,16 @@
   <div class="row justify-content-center m-5">
     <div class="col-12 col-sm-12 col-md-9 col-lg-7 col-xl-6">
       <div class="login-page card p-5 shadow rounded" style="width: 500px !important;">
-        <Form @submit="submit">
+        <Form @submit="submit" v-slot="{ errors } ">
           <h3> Todoist clone </h3>
           <div class="my-4">
-            <label for="email" class="form-label">Email:</label>
-            <CustomInput name="email"
-                         attribute="email"
-                         type="email"
+            <label for="username" class="form-label">Username:</label>
+            <CustomInput name="username"
+                         attribute="username"
+                         type="text"
                          :model="model"
                          :rules="{required: true }"
-                         placeholder="Enter email">
+                         placeholder="Enter username">
             </CustomInput>
           </div>
           <div class="my-4">
@@ -23,11 +23,14 @@
                          :rules="{required: true}"
                          placeholder="Enter password">
             </CustomInput>
+
+            <p class="alert alert-danger p-2 mt-3" v-if="errorMessage"> {{ errorMessage }}</p>
+
           </div>
           <div class="form-check mb-3">
             <label class="form-check-label">
               <input class="form-check-input"
-                     v-model="remember"
+                     v-model="model.remember"
                      type="checkbox"> Remember me
             </label>
             <router-link class="mx-3" to="/register">Register</router-link>
@@ -47,9 +50,12 @@
   </div>
 </template>
 
+<!--suppress ES6MissingAwait -->
 <script>
-import CustomInput from "@/Components/CustomInput";
+import CustomInput from "@/components/CustomInput";
 import {Field, Form, ErrorMessage} from 'vee-validate';
+import AuthService from "@/views/auth/AuthService";
+import helpers from "@/helpers";
 
 export default {
   name: "Login",
@@ -58,19 +64,29 @@ export default {
     return {
       isLoading: false,
       model: {
-        email: '',
+        username: '',
         password: '',
         remember: false
-      }
+      },
+      errorMessage: '',
     }
-
   },
   methods: {
-    submit() {
+    async submit() {
       this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 300)
+      try {
+        const res = await AuthService.login(this.model)
+        const token = res.data
+        AuthService.saveToken(token)
+        this.$router.push({name: 'home'})
+      } catch (e) {
+        const errors = helpers.getErrors(e.response.data)
+        this.errorMessage = helpers.getFirstError(errors)
+        setTimeout(() => {
+          this.errorMessage = ''
+        }, 2000)
+      }
+      this.isLoading = false;
     },
   }
 }
