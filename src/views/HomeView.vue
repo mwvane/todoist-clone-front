@@ -9,6 +9,7 @@
 <script>
 // @ is an alias to /src
 import {mapState} from "vuex";
+import axiosClient from "@/shared/axiosClient";
 
 export default {
   name: 'HomeView',
@@ -19,9 +20,7 @@ export default {
     ...mapState(['isAuthorised'])
   },
   mounted() {
-    if(!this.isAuthorised){
-      this.$router.push({name: "login"})
-    }
+    axiosClient.get('/api/test')
   }
 }
 </script>
