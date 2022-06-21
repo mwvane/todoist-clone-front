@@ -1,9 +1,9 @@
-
 export default {
-    login(username, password) {
+    async login(username, password) {
+
     },
 
-    register() {
+    async register() {
 
     }
 }
