@@ -6,36 +6,23 @@
           <h3> Todoist clone </h3>
           <div class="my-4">
             <label for="email" class="form-label">Email:</label>
-            <Field v-model="email"
-                   type="email"
-                   name="email"
-                   :rules="required"
-                   validateOnInput
-                   v-slot="{ field, errors }">
-              <input v-bind="field"
-                     class="form-control"
-                     :class="{'is-invalid': errors && errors.length > 0}"
-                     placeholder="Enter email">
-            </Field>
-            <ErrorMessage name="email" class="text-danger"/>
-
+            <CustomInput name="email"
+                         attribute="email"
+                         type="email"
+                         :model="model"
+                         :rules="{required: true }"
+                         placeholder="Enter email">
+            </CustomInput>
           </div>
           <div class="my-4">
             <label for="pwd" class="form-label">Password:</label>
-            <Field v-model="password"
-                   type="password"
-                   name="password"
-                   :rules="required"
-                   validateOnInput
-                   v-slot="{ field, errors }">
-              <input v-bind="field"
-                     class="form-control"
-                     :class="{'is-invalid': errors && errors.length > 0}"
-                     placeholder="Enter password">
-            </Field>
-            <ErrorMessage name="password" class="text-danger"/>
-
-
+            <CustomInput name="password"
+                         attribute="password"
+                         type="password"
+                         :model="model"
+                         :rules="{required: true}"
+                         placeholder="Enter password">
+            </CustomInput>
           </div>
           <div class="form-check mb-3">
             <label class="form-check-label">
@@ -43,6 +30,7 @@
                      v-model="remember"
                      type="checkbox"> Remember me
             </label>
+            <router-link class="mx-3" to="/register">Register</router-link>
           </div>
           <button type="submit"
                   :disabled="isLoading"
@@ -60,17 +48,22 @@
 </template>
 
 <script>
-import { Field, Form, ErrorMessage } from 'vee-validate';
+import CustomInput from "@/Components/CustomInput";
+import {Field, Form, ErrorMessage} from 'vee-validate';
+
 export default {
   name: "Login",
-  components: {Form, Field, ErrorMessage},
+  components: {Form, CustomInput},
   data() {
     return {
       isLoading: false,
-      email: '',
-      password: '',
-      remember: false
+      model: {
+        email: '',
+        password: '',
+        remember: false
+      }
     }
+
   },
   methods: {
     submit() {
@@ -79,12 +72,6 @@ export default {
         this.isLoading = false;
       }, 300)
     },
-    required(value) {
-      if (value.length > 0) {
-        return true;
-      }
-      return 'This field is required'
-    }
   }
 }
 </script>
