@@ -19,6 +19,10 @@ export default {
 
     getToken() {
         return localStorage.getItem('LOGGED_IN_TOKEN');
+    },
+
+    signout() {
+        localStorage.removeItem('LOGGED_IN_TOKEN')
     }
 
 }

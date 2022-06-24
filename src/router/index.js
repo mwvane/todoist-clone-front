@@ -4,6 +4,7 @@ import Register from "@/views/auth/Register";
 import HomeView from "@/views/HomeView";
 import DefaultLayout from "@/views/DefaultLayout";
 import AuthService from "@/views/auth/AuthService";
+import Signout from "@/views/auth/Signout";
 const routes = [
   {
     // /home/blogs
@@ -26,6 +27,10 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register,
+  },
+  {
+    path: '/signout',
+    component: Signout
   }
 ]
 
