@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import Login from "@/views/auth/Login";
 import Register from "@/views/auth/Register";
 import HomeView from "@/views/HomeView";
 import DefaultLayout from "@/views/DefaultLayout";
 import AuthService from "@/views/auth/AuthService";
 import ProjectView from "@/views/ProjectView";
+import Signout from "@/views/auth/Signout";
 const routes = [
   {
     // /home/blogs
@@ -33,19 +34,20 @@ const routes = [
     name: 'register',
     component: Register,
   },
-
+  {
+    path: '/signout',
+    component: Signout
+  }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
-// comment beforeeach temporarily . for testing
-// router.beforeEach((to, from, next) => {
-//   if (!AuthService.isLoggedIn() && to.name !== 'login' && to.name !== 'register') {
-//     return next({name: 'login'})
-//   }
-//   next();
-// })
-
+router.beforeEach((to, from, next) => {
+  if (!AuthService.isLoggedIn() && to.name !== 'login' && to.name !== 'register') {
+    return next({name: 'login'})
+  }
+  next();
+})
 export default router
