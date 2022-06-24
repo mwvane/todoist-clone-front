@@ -13,7 +13,7 @@ import {
     faAlignLeft,
     faCopy,
     faXmark,
-    faClipboardCheck,
+    faClipboardList,
     faImage,
     faCloudArrowUp,
     faBars,
@@ -26,6 +26,10 @@ import {
     faBell,
     faChevronRight,
     faChevronDown,
+    faUser,
+    faBoxOpen,
+    faEllipsis,
+    faGripLines,
 }
     from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome"
@@ -39,7 +43,7 @@ library.add(
     faAlignLeft,
     faCopy,
     faXmark,
-    faClipboardCheck,
+    faClipboardList,
     faImage,
     faCloudArrowUp,
     faBars,
@@ -52,6 +56,10 @@ library.add(
     faBell,
     faChevronRight,
     faChevronDown,
+    faUser,
+    faBoxOpen,
+    faEllipsis,
+    faGripLines,
 )
 
 const app = createApp(App)

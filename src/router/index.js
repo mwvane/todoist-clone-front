@@ -4,6 +4,7 @@ import Register from "@/views/auth/Register";
 import HomeView from "@/views/HomeView";
 import DefaultLayout from "@/views/DefaultLayout";
 import AuthService from "@/views/auth/AuthService";
+import ProjectView from "@/views/ProjectView";
 const routes = [
   {
     // /home/blogs
@@ -14,6 +15,11 @@ const routes = [
         path: 'home',
         name: 'home',
         component: HomeView,
+      },
+      {
+        path: '/project/:id',
+        name: 'project',
+        component: ProjectView,
       }
     ]
   },
@@ -26,19 +32,20 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register,
-  }
+  },
+
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
-router.beforeEach((to, from, next) => {
-  if (!AuthService.isLoggedIn() && to.name !== 'login' && to.name !== 'register') {
-    return next({name: 'login'})
-  }
-  next();
-})
+// comment beforeeach temporarily . for testing
+// router.beforeEach((to, from, next) => {
+//   if (!AuthService.isLoggedIn() && to.name !== 'login' && to.name !== 'register') {
+//     return next({name: 'login'})
+//   }
+//   next();
+// })
 
 export default router

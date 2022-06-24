@@ -21,6 +21,7 @@
     "vee-validate": "^4.5.11",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
