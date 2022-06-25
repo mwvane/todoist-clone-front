@@ -112,15 +112,10 @@ export default {
       })
     }
   },
-  watch: {
-    '$route.params.id'(projectId) {
-      this.getCurrentProject(projectId)
-    }
-  },
   mounted() {
     const projectId = this.$route.params.id
     this.getCurrentProject(projectId)
-  }
+  },
 }
 </script>
 

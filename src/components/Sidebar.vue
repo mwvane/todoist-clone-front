@@ -63,11 +63,12 @@ export default {
     ...mapState(["isSideBarOpened","isProjectsCollapsed","projects", "isLoading"]),
   },
   methods:{
-    ...mapActions(["collapseProjects","addProject"]),
+    ...mapActions(["collapseProjects","addProject", "getCurrentProject"]),
     collapse(){
       this.collapseProjects()
     },
     openProject(id){
+      this.getCurrentProject(id)
       this.$router.push({name:"project", params:{id:id}})
     },
     saveProject(val){
