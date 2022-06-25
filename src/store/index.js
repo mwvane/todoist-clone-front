@@ -1,29 +1,16 @@
 import {createStore} from 'vuex'
 import Helpers from "@/helpers/helpers";
+import ProjectService from "@/services/ProjectService";
 
 export default createStore({
     state: {
         isAuthorised: true,
         isSideBarOpened: true,
         isProjectsCollapsed: false,
-        //created for testing
-        projects: [{
-            name: "Todoist-clone",
-            id: 1,
-            sections: [
-                {
-                    id: 1,
-                    name: "example",
-                    items: [
-                        {
-                            id: 1,
-                            title: "example task",
-                            isArchived: false
-                        },
-                    ]
-                },
-            ]
-        }]
+        projects: [],
+        currentProject: {},
+        isLoading: true,
+        isProjectLoading: false,
     },
     getters: {},
     mutations: {
@@ -33,44 +20,36 @@ export default createStore({
         collapseProjects(state) {
             state.isProjectsCollapsed = !state.isProjectsCollapsed
         },
-        addTask(state, {projectId, sectionId, value}) {
-            let projectIndex = Helpers.findIndexById(projectId, state.projects)
-            let sectionIndex = Helpers.findIndexById(sectionId, state.projects[projectIndex].sections)
-            state.projects[projectIndex].sections[sectionIndex].items.push({
-                id: Helpers.getID(state.projects[projectIndex].sections[sectionIndex].items),
-                title: value,
-                isArchived: false
-            })
+        addTask(state, {sectionId, item}) {
+            let sectionIndex = Helpers.findIndexById(sectionId, state.currentProject.sections)
+            state.currentProject.sections[sectionIndex].items.push(JSON.parse(JSON.stringify(item)))
         },
-        addSection(state, {projectId, sectionName}) {
-
-            let index = Helpers.findIndexById(projectId, state.projects)
-            let section = {
-                id: Helpers.getID(state.projects[index].sections),
-                name: sectionName,
-                items: [],
-            }
-            state.projects[index].sections.push(section)
+        addSection(state, section) {
+            state.currentProject.sections.push(JSON.parse(JSON.stringify(section)))
         },
-        updateItem(state, {projectId, itemId, sectionId, value}) {
-            let projectIndex = Helpers.findIndexById(projectId, state.projects)
-            let sectionIndex = Helpers.findIndexById(sectionId, state.projects[projectIndex].sections)
-            let itemIndex = Helpers.findIndexById(itemId,state.projects[projectIndex].sections[sectionIndex].items)
-            state.projects[projectIndex].sections[sectionIndex].items[itemIndex].title = value
+        updateItem(state, {itemId, sectionId, item}) {
+            let sectionIndex = Helpers.findIndexById(sectionId, state.currentProject.sections)
+            let itemIndex = Helpers.findIndexById(itemId, state.currentProject.sections[sectionIndex].items)
+            state.currentProject.sections[sectionIndex].items[itemIndex] = JSON.parse(JSON.stringify(item))
         },
-        updateSectionName(state, {projectId, sectionId, value}){
-            let projectIndex = Helpers.findIndexById(projectId, state.projects)
-            let sectionIndex = Helpers.findIndexById(sectionId, state.projects[projectIndex].sections)
-            state.projects[projectIndex].sections[sectionIndex].name = value
+        updateSectionName(state, {sectionId, value}) {
+            let sectionIndex = Helpers.findIndexById(sectionId, state.currentProject.sections)
+            state.currentProject.sections[sectionIndex].name = value
         },
-        addProject(state, title){
-            let project = {
-                name: title,
-                id: Helpers.getID(state.projects),
-                sections: [
-                ]
-            }
+        addProject(state, project) {
             state.projects.push(project)
+        },
+        toggleIsLoading(state, flag) {
+            state.isLoading = flag;
+        },
+        setProjects(state, projects) {
+            state.projects = projects
+        },
+        setCurrentProject(state, project) {
+            state.currentProject = project
+        },
+        toggleProjectLoading(state, flag) {
+            state.isProjectLoading = flag;
         }
     },
     actions: {
@@ -80,22 +59,42 @@ export default createStore({
         collapseProjects({commit}) {
             commit('collapseProjects')
         },
-        addTask({commit}, {projectId, sectionId, value}) {
-            commit('addTask', {projectId, sectionId, value})
+        addTask({commit}, {sectionId, item}) {
+            commit('addTask', {sectionId, item})
         },
-        addSection({commit}, {projectId, sectionName}) {
-            commit('addSection', {projectId, sectionName})
+        addSection({commit}, section) {
+            commit('addSection', section)
         },
-        updateItem({commit}, {projectId, itemId, sectionId, value}) {
-            commit('updateItem', {projectId, itemId, sectionId, value})
+        updateItem({commit}, {itemId, sectionId, item}) {
+            commit('updateItem', {itemId, sectionId, item})
         },
-        updateSectionName({commit}, {projectId, sectionId, value}){
-            commit("updateSectionName", {projectId, sectionId, value})
+        updateSectionName({commit}, {sectionId, value}) {
+            commit("updateSectionName", {sectionId, value})
         },
-        addProject({commit},title){
-            commit('addProject', title)
+        async addProject({commit}, name) {
+            const project = await ProjectService.createProject({name})
+            if (!project.ok) {
+                alert("Can't create project")
+                return;
+            }
+            commit('addProject', project.data)
+        },
+        async getDataFromApi({commit}) {
+            commit("toggleIsLoading", true)
+            const projects = await ProjectService.getProjects()
+            commit("setProjects", projects.data)
+            commit("toggleIsLoading", false)
+        },
+        async getCurrentProject({commit}, id) {
+            commit("toggleProjectLoading", true)
+            const project = await ProjectService.getProject(id)
+            if (!project.ok) {
+                alert("such project does not exist")
+                return
+            }
+            commit("setCurrentProject", project.data)
+            commit("toggleProjectLoading", false)
         }
-
     },
     modules: {}
 })

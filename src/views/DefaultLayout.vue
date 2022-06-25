@@ -5,7 +5,14 @@
     <div class="d-flex" style="height: 100%; overflow: hidden !important;">
       <Sidebar></Sidebar>
       <div class="layout-body" style="height: 100%">
-        <router-view></router-view>
+        <template v-if="!isLoading">
+          <router-view></router-view>
+        </template>
+        <template v-else>
+          <div class="text-center mt-5">
+            <div class="spinner spinner-border" style="width: 70px; height: 70px; font-size: 1.6rem"></div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -21,10 +28,10 @@ export default {
     Navbar, Sidebar
   },
   computed:{
-    ...mapState(["isProjectsCollapsed","projects"]),
+    ...mapState(["isProjectsCollapsed","projects", "isLoading"]),
   },
   methods:{
-    ...mapActions(["collapseProjects"]),
+    ...mapActions(["collapseProjects", "getDataFromApi"]),
     collapse(){
       this.collapseProjects()
     },
@@ -32,6 +39,9 @@ export default {
       this.$router.push({name:"project", params:{id:id}})
     },
   },
+  mounted() {
+    this.getDataFromApi()
+  }
 }
 </script>
 

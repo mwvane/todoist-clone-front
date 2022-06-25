@@ -1,7 +1,7 @@
 <template>
   <div class="item-container">
     <button class="project-item px-5 m- ">
-      <EditableString :title="title" @update="update"></EditableString>
+      <EditableString :title="name" @update="update"></EditableString>
     </button>
   </div>
 </template>
@@ -13,7 +13,7 @@ export default {
   name: "ProjectItem",
   components:{EditableString},
   props: {
-    title: String,
+    name: String,
     itemId: Number,
     projectId: Number,
     sectionId: Number,

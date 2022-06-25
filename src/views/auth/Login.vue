@@ -74,17 +74,14 @@ export default {
   methods: {
     async submit() {
       this.isLoading = true;
-      try {
-        const res = await AuthService.login(this.model)
+      const res = await AuthService.login(this.model)
+      if (res.ok) {
         const token = res.data
         AuthService.saveToken(token)
         this.$router.push({name: 'home'})
-      } catch (e) {
-        const errors = helpers.getErrors(e.response.data)
+      } else {
+        const errors = helpers.getErrors(res.data)
         this.errorMessage = helpers.getFirstError(errors)
-        setTimeout(() => {
-          this.errorMessage = ''
-        }, 2000)
       }
       this.isLoading = false;
     },

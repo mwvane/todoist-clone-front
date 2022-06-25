@@ -23,7 +23,7 @@
         <span class="mx-2">Projects</span>
       </div>
       <div v-if="isProjectsCollapsed" class="my-2" style="width: 100%">
-       <div class="mx-2 " style="width: 94%">
+       <div class="mx-2" v-if="!isLoading" style="width: 94%">
          <div v-for="project in projects" :key="project.id">
            <div class="sidebar-button" @click="openProject(project.id)">
              <font-awesome-icon class="mx-1" icon="user" style="font-size: 14px"></font-awesome-icon>
@@ -37,6 +37,9 @@
            <font-awesome-icon icon="box-open"></font-awesome-icon>
            <span class="mx-2">archived projects</span>
          </div>
+       </div>
+       <div v-else class="mx-5 mt-3">
+         <div class="spinner spinner-border"></div>
        </div>
       </div>
 
@@ -57,7 +60,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(["isSideBarOpened","isProjectsCollapsed","projects"]),
+    ...mapState(["isSideBarOpened","isProjectsCollapsed","projects", "isLoading"]),
   },
   methods:{
     ...mapActions(["collapseProjects","addProject"]),

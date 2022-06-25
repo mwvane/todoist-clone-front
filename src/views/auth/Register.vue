@@ -92,7 +92,7 @@ import helpers from "@/helpers";
 
 export default {
   name: "Register",
-  components:{
+  components: {
     CustomInput, Form
   },
   data() {
@@ -109,14 +109,14 @@ export default {
       errorMessage: '',
     }
   },
-  methods:{
-    async submit(){
+  methods: {
+    async submit() {
       this.isLoading = true;
-      try {
-        const res = await AuthService.register(this.model)
+      const res = await AuthService.register(this.model)
+      if (res.ok) {
         this.$router.push({name: 'login'})
-      } catch (e) {
-        const errors = helpers.getErrors(e.response.data)
+      } else {
+        const errors = helpers.getErrors(res.data)
         this.errorMessage = helpers.getFirstError(errors)
       }
       this.isLoading = false;
