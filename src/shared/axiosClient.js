@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AppSettings from "@/shared/AppSettings";
-import AuthService from "@/views/auth/AuthService";
+import AuthService from "@/services/AuthService";
 
 let config = {
     baseURL: AppSettings.apiUrl()

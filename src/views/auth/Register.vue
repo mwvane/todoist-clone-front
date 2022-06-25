@@ -87,7 +87,7 @@
 <script>
 import CustomInput from "@/components/CustomInput";
 import {Form} from 'vee-validate'
-import AuthService from "@/views/auth/AuthService";
+import AuthService from "@/services/AuthService";
 import helpers from "@/helpers";
 
 export default {

@@ -54,7 +54,7 @@
 <script>
 import CustomInput from "@/components/CustomInput";
 import {Field, Form, ErrorMessage} from 'vee-validate';
-import AuthService from "@/views/auth/AuthService";
+import AuthService from "@/services/AuthService";
 import helpers from "@/helpers";
 
 export default {

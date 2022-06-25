@@ -3,7 +3,7 @@ import Login from "@/views/auth/Login";
 import Register from "@/views/auth/Register";
 import HomeView from "@/views/HomeView";
 import DefaultLayout from "@/views/DefaultLayout";
-import AuthService from "@/views/auth/AuthService";
+import AuthService from "@/services/AuthService";
 import ProjectView from "@/views/ProjectView";
 import Signout from "@/views/auth/Signout";
 const routes = [

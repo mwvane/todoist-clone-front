@@ -9,7 +9,7 @@
 <!--suppress ES6MissingAwait -->
 <script>
 
-import AuthService from "@/views/auth/AuthService";
+import AuthService from "@/services/AuthService";
 
 export default {
   name: "Signout",
